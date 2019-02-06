@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp
+"06_02_2019_phased_array_emulation\startup_stm32f429xx.o"
+"06_02_2019_phased_array_emulation\system_stm32f4xx.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_dac_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_flash_ramfunc.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_tim.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_gpio.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_cortex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_dma.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_dma_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_dac.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_tim_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_rcc.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_pwr.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_flash_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_pwr_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_flash.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_rcc_ex.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_it.o"
+"06_02_2019_phased_array_emulation\main.o"
+"06_02_2019_phased_array_emulation\stm32f4xx_hal_msp.o"
+--library_type=microlib --strict --scatter "06_02_2019_Phased_Array_Emulation\06_02_2019_Phased_Array_Emulation.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "06_02_2019_Phased_Array_Emulation.map" -o 06_02_2019_Phased_Array_Emulation\06_02_2019_Phased_Array_Emulation.axf
