@@ -60,7 +60,7 @@ TIM_HandleTypeDef htim6;
 
 int diameter = 27;																								// diameter = 27mm
 int velocity = 1500;																							// Velocity = 1500m/s
-int frequency ;																						// frequency = 22 Khz
+int frequency = 18500;																						// frequency = 22 Khz
 
 float Wave_length;																								// Wave lentgh = ( 1000 * velocity ) / frequency mm
 float Radius;																											// Radius = diameter / 2
@@ -78,7 +78,6 @@ uint16_t Theta [BUFSIZE];																					// Theta tab (°)
 uint16_t indice,DegVALUE;																					// DegVALUE test degree value => Value codeLINE 124
 uint16_t  k;
 
-
 float dA [BUFSIZE];
 float dB [BUFSIZE];
 float dC [BUFSIZE];
@@ -86,8 +85,6 @@ float dC [BUFSIZE];
 float phase_H1 [BUFSIZE];
 float phase_H2 [BUFSIZE];																			
 float phase_H3 [BUFSIZE];
-
-float PHI1,PHI2,PHI3;
 																			
 float signal_H1 [BUFSIZE];
 float signal_H2 [BUFSIZE];
@@ -121,8 +118,74 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
 	
+	Wave_length = ( 1000 * velocity ) / frequency;
+	Radius = diameter / 2;
+	indice = 0;
 	DegVALUE = 222;
-	frequency = 18500;
+	
+for(int j=0; j<360; j++){
+	
+	if (j == DegVALUE){
+			for(int i=0; i<360; i++)
+        {
+           Theta [i] = i;   																										// Theta tab (°)
+				}
+				
+				// THE FIRST THREE TABLES:	Distance		
+			for(int i=0; i<360; i++)
+        {
+           dA [i] = Radius * (1 - sin((Theta[i] + 30)*PI/180));   							// dA = Rayon- Rayon*sin(Theta+30)
+				}
+				
+			for(int i=0; i<360; i++)
+        {
+           dB [i] = Radius * (1 + cos((Theta[i])*PI/180));   										// dB = Rayon + Rayon*Cos(Theta)
+				}
+				
+			for(int i=0; i<360; i++)
+        {
+           dC [i] = Radius * (1 - sin((30 - Theta[i])*PI/180));   							// dC = Rayon - Rayon*Sin(30-Theta)
+				}
+				
+				
+				//THE SECOND THREE TABLES:	Phase
+			for(int i=0; i<360; i++)
+        {
+           phase_H1 [i] = (dA[i] * 360) / Wave_length;   												
+				}
+				
+			for(int i=0; i<360; i++)
+        {
+           phase_H2 [i] = (dB[i] * 360) / Wave_length;   												
+				}
+				
+			for(int i=0; i<360; i++)
+        {
+           phase_H3 [i] = (dC[i] * 360) / Wave_length;   												
+				}	
+				
+				//THE THIRD THREE TABLES:		Signals test theta = DegVALUE°
+			for(int i=0; i<360; i++)
+        {
+						T1 = (2*PI*frequency*Theta [i])/48000;
+						signal_H1 [i] = 2048 *(sin( T1 + ((phase_H1 [j]) * PI/180)) + 1 );   												
+				}
+	
+			for(int i=0; i<360; i++)
+        {
+						T2 = (2*PI*frequency*Theta [i])/48000;
+						signal_H2 [i] = 2048 *(sin( T2 + ((phase_H2 [j]) * PI/180)) + 1 );
+				}
+				
+			for(int i=0; i<360; i++)
+        {
+						T3 = (2*PI*frequency*Theta [i])/48000;
+						signal_H3 [i] = 2048 *(sin( T3 + ((phase_H3 [j]) * PI/180)) + 1 );
+				}
+		}
+				
+}			
+
 
   /* USER CODE END 1 */
 
@@ -163,84 +226,6 @@ int main(void)
 
   /* USER CODE END WHILE */
 		
-	//frequency = 18500;
-	Wave_length = ( 1000 * velocity ) / frequency;
-	Radius = diameter / 2;
-	indice = 0;
-	//DegVALUE = 222;
-	
-for(int j=0; j<360; j++){
-	
-	if (j == DegVALUE){
-			for(int i=0; i<360; i++)
-        {
-           Theta [i] = i;   																										// Theta tab (°)
-				}
-				
-				// THE FIRST THREE TABLES:	Distance		
-			for(int i=0; i<360; i++)
-        {
-           dA [i] = Radius * (1 - sin((Theta[i] + 30)*PI/180));   							// dA = Rayon- Rayon*sin(Theta+30)
-				}
-				
-			for(int i=0; i<360; i++)
-        {
-           dB [i] = Radius * (1 + cos((Theta[i])*PI/180));   										// dB = Rayon + Rayon*Cos(Theta)
-				}
-				
-			for(int i=0; i<360; i++)
-        {
-           dC [i] = Radius * (1 - sin((30 - Theta[i])*PI/180));   							// dC = Rayon - Rayon*Sin(30-Theta)
-				}
-				
-				
-				//THE SECOND THREE TABLES:	Phase
-			for(int i=0; i<360; i++)
-        {
-						phase_H1 [i] = (dA[i] * 360) / Wave_length; 
-						
-		
-				}
-				PHI1 = phase_H1 [j];
-			for(int i=0; i<360; i++)
-        {
-						phase_H2 [i] = (dB[i] * 360) / Wave_length; 
-						
-						
-				}
-				PHI2 = phase_H2 [j];
-			for(int i=0; i<360; i++)
-        {
-						phase_H3 [i] = (dC[i] * 360) / Wave_length;  
-						
-				}	
-				PHI3 = phase_H3 [j];
-				
-				//THE THIRD THREE TABLES:		Signals test theta = DegVALUE°
-			for(int i=0; i<360; i++)
-        {
-						T1 = (2*PI*frequency*Theta [i])/48000;
-						signal_H1 [i] = 2048 *(sin( T1 + ((phase_H1 [j]) * PI/180)) + 1 );   												
-				}
-	
-			for(int i=0; i<360; i++)
-        {
-						T2 = (2*PI*frequency*Theta [i])/48000;
-						signal_H2 [i] = 2048 *(sin( T2 + ((phase_H2 [j]) * PI/180)) + 1 );
-				}
-				
-			for(int i=0; i<360; i++)
-        {
-						T3 = (2*PI*frequency*Theta [i])/48000;
-						signal_H3 [i] = 2048 *(sin( T3 + ((phase_H3 [j]) * PI/180)) + 1 );
-				}
-		}
-	
-		
-				
-}		
-
-
   /* USER CODE BEGIN 3 */
 
   }
